@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import {composeWithDevTools } from 'redux-devtools-extension';
+import 'antd/dist/antd.css';
 import reportWebVitals from './reportWebVitals';
+import rootReducer from './reducers';
+const store = createStore(rootReducer,composeWithDevTools());
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
     <App />
-  </React.StrictMode>,
+    </BrowserRouter>
+    </Provider>,
   document.getElementById('root')
 );
 
