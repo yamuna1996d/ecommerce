@@ -1,18 +1,33 @@
-import React, { useState } from "react";
-import { auth } from "../../firebase";
-import {googleAuthProvider} from '../../firebase';
+import React, { useState, useEffect } from "react";
+import { auth, googleAuthProvider } from "../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { createOrUpdateUser } from "../../functions/auth";
 
 const Login = ({ history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("yamunag19@gmail.com");
+  const [password, setPassword] = useState("ava1234");
   const [loading, setLoading] = useState(false);
 
+  const { user } = useSelector((state) => ({ ...state }));
+
+  useEffect(() => {
+    if (user && user.token) history.push("/");
+  }, [user,history]);
+
   let dispatch = useDispatch();
+
+  const roleBasedRedirect = (res) => {
+    if (res.data.role === "admin") {
+      history.push("/admin/admindashboard");
+    } else {
+      history.push("/user/history");
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +39,23 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-      history.push("/");
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+          roleBasedRedirect(res);
+        })
+        .catch();
+
+      //history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -45,14 +69,22 @@ const Login = ({ history }) => {
       .then(async (result) => {
         const { user } = result;
         const idTokenResult = await user.getIdTokenResult();
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          },
-        });
-        history.push("/");
+        createOrUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+            roleBasedRedirect(res);
+          })
+          .catch();
+        //history.push("/");
       })
       .catch((err) => {
         console.log(err);
@@ -122,7 +154,7 @@ const Login = ({ history }) => {
             Login with Google
           </Button>
 
-          <Link to="/forgot/password" className="float-right text-info">
+          <Link to="/forgot/password" className="float-right text-danger">
             Forgot Password
           </Link>
         </div>
