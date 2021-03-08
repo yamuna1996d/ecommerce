@@ -14,9 +14,15 @@ import {auth} from './firebase';
 import {useDispatch} from 'react-redux';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import {currentUser} from './functions/auth';
+import CategoryCreate from './pages/admin/category/CategoryCreate';
+import CategoryUpdate from './pages/admin/category/CategoryUpdate';
+import SubUpdate from './pages/admin/sub/SubUpdate';
 import History from './pages/user/History';
 import UserRoute from './components/routes/UserRoute';
 import AdminRoute from './components/routes/AdminRoute';
+import SubCreate from './pages/admin/sub/SubCreate';
+import ProductCreate from './pages/admin/product/ProductCreate';
+import AllProducts from './pages/admin/product/AllProducts';
 
 const App = () =>{
   const dispatch = useDispatch()
@@ -60,6 +66,12 @@ const App = () =>{
       <UserRoute path="/user/password" component={Password} exact></UserRoute>
       <UserRoute path="/user/wishlist" component={Wishlist} exact></UserRoute>
       <AdminRoute path="/admin/admindashboard" component={AdminDashboard} exact></AdminRoute>
+      <AdminRoute path="/admin/category" component={CategoryCreate} exact></AdminRoute>
+      <AdminRoute path="/admin/sub" component={SubCreate} exact></AdminRoute>
+      <AdminRoute path="/admin/product" component={ProductCreate} exact></AdminRoute>
+      <AdminRoute path="/admin/category/:slug" component={CategoryUpdate} exact></AdminRoute>
+      <AdminRoute path="/admin/sub/:slug" component={SubUpdate} exact></AdminRoute>
+      <AdminRoute path="/admin/products" component={AllProducts} exact></AdminRoute>
     </Switch>
    </div>
   );
