@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "antd";
+// import { Card } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
