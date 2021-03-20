@@ -22,6 +22,7 @@ import UserRoute from './components/routes/UserRoute';
 import AdminRoute from './components/routes/AdminRoute';
 import SubCreate from './pages/admin/sub/SubCreate';
 import ProductCreate from './pages/admin/product/ProductCreate';
+import ProductUpdate from './pages/admin/product/ProductUpdate';
 import AllProducts from './pages/admin/product/AllProducts';
 
 const App = () =>{
@@ -69,6 +70,7 @@ const App = () =>{
       <AdminRoute path="/admin/category" component={CategoryCreate} exact></AdminRoute>
       <AdminRoute path="/admin/sub" component={SubCreate} exact></AdminRoute>
       <AdminRoute path="/admin/product" component={ProductCreate} exact></AdminRoute>
+      <AdminRoute path="/admin/product/:slug" component={ProductUpdate} exact></AdminRoute>
       <AdminRoute path="/admin/category/:slug" component={CategoryUpdate} exact></AdminRoute>
       <AdminRoute path="/admin/sub/:slug" component={SubUpdate} exact></AdminRoute>
       <AdminRoute path="/admin/products" component={AllProducts} exact></AdminRoute>

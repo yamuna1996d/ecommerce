@@ -30,8 +30,9 @@ const AllProducts = () => {
   };
 
   const handleRemove = (slug) => {
+    // let answer = window.confirm("Delete?");
     if (window.confirm("Delete?")) {
-      // console.log("send delete request", slug);
+       console.log("send delete request", slug);
       removeProduct(slug, user.token)
         .then((res) => {
           loadAllProducts();
